@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover">
+<title>DAJIOS — Daily Practice</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Archivo:wght@500;600;700;800&display=swap');
+
+  :root{
+    --paper: #E4D3A5;
+    --paper-dim: #D9C48F;
+    --ink: #2B1D0E;
+    --ink-soft: #5C4A30;
+    --vermilion: #A93A1E;
+    --vermilion-deep: #7E2A14;
+    --maroon: #6E2B22;
+    --line: rgba(43,29,14,0.22);
+    --line-strong: rgba(43,29,14,0.9);
+    --done-bg: #2B1D0E;
+    --done-fg: #E4D3A5;
+  }
+
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Archivo', sans-serif;
+    min-height: 100vh;
+    overscroll-behavior-y: none;
+    font-size: 17px;
+    line-height: 1.5;
+  }
+
+  body {
+    background-color: var(--paper);
+  }
+  .app {
+    background-color: var(--paper);
+    background-image:
+      radial-gradient(circle at 0% 0%, rgba(110,70,25,0.16), transparent 180px),
+      radial-gradient(circle at 100% 0%, rgba(110,70,25,0.14), transparent 180px),
+      radial-gradient(circle at 0% 100%, rgba(110,70,25,0.16), transparent 180px),
+      radial-gradient(circle at 100% 100%, rgba(110,70,25,0.14), transparent 180px);
+    background-repeat: no-repeat;
+  }
+
+  .app {
+    max-width: 560px;
+    margin: 0 auto;
+    padding: env(safe-area-inset-top, 0) 0 calc(94px + env(safe-area-inset-bottom, 0));
+    min-height: 100vh;
+    position: relative;
+    border-left: 1px solid var(--line);
+    border-right: 1px solid var(--line);
+    z-index: 2;
+  }
+
+  /* ---------- Masthead ---------- */
+  header.top {
+    padding: 22px 20px 16px;
+    border-bottom: 3px solid var(--ink);
+  }
+  .masthead-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .mark {
+    font-family: 'Archivo', sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--vermilion-deep);
+    font-weight: 800;
+  }
+  .date-line {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+  }
+  h1.title {
+    font-family: 'Fraunces', serif;
+    font-optical-sizing: auto;
+    font-size: 48px;
+    font-weight: 600;
+    margin: 4px 0 0;
+    letter-spacing: -0.01em;
+    line-height: 1.02;
+    color: var(--ink);
+  }
+
+  /* ---------- Epigraph / quote ---------- */
+  .epigraph {
+    padding: 26px 20px 24px;
+    border-bottom: 1px solid var(--line);
+    position: relative;
+  }
+  .epigraph .rule-num {
+    font-family: 'Archivo', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--vermilion);
+    margin-bottom: 10px;
+    display: block;
+  }
+  .quote-text {
+    font-family: 'Fraunces', serif;
+    font-size: 25px;
+    font-weight: 500;
+    font-style: italic;
+    line-height: 1.32;
+    color: var(--ink);
+    border-left: 4px solid var(--vermilion);
+    padding-left: 18px;
+  }
+  .quote-source {
+    margin-top: 12px;
+    padding-left: 18px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink-soft);
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+
+  /* ---------- Streak ---------- */
+  .streak-row {
+    display: flex;
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--line);
+    gap: 24px;
+  }
+  .streak-item { display:flex; align-items:baseline; gap: 8px; }
+  .streak-num {
+    font-family: 'Fraunces', serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--vermilion-deep);
+    line-height: 1;
+  }
+  .streak-label {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-soft);
+  }
+
+  /* ---------- Nav tabs ---------- */
+  nav.tabs {
+    display: flex;
+    border-bottom: 1px solid var(--line);
+  }
+  nav.tabs button {
+    flex: 1;
+    background: none; border: none;
+    font-family: 'Archivo', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    padding: 16px 8px;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -1px;
+  }
+  nav.tabs button.active {
+    color: var(--ink);
+    border-bottom-color: var(--vermilion);
+  }
+
+  main { padding: 22px 20px; }
+  .view { display: none; }
+  .view.active { display: block; }
+
+  /* ---------- Progress summary ---------- */
+  .day-summary {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 20px;
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 2px;
+    margin-bottom: 26px;
+    box-shadow: 0 2px 0 rgba(43,29,14,0.3);
+  }
+  .ring {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    background: conic-gradient(var(--vermilion) calc(var(--pct,0) * 1%), rgba(228,211,165,0.2) 0);
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+  .ring::before {
+    content: '';
+    position: absolute;
+    inset: 6px;
+    border-radius: 50%;
+    background: var(--ink);
+  }
+  .ring span {
+    position: relative;
+    font-family: 'Archivo', sans-serif;
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--paper);
+  }
+  .day-summary .txt { flex: 1; }
+  .day-summary .txt .n { font-size: 17px; font-weight: 700; }
+  .day-summary .txt .m { font-family: 'Fraunces', serif; font-size: 15px; font-style: italic; color: rgba(228,211,165,0.8); margin-top: 4px; }
+
+  /* ---------- Section labels ---------- */
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Archivo', sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink);
+    font-weight: 800;
+    margin: 30px 0 4px;
+  }
+  .section-label:first-child { margin-top: 0; }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 2px;
+    background: var(--ink);
+  }
+
+  /* ---------- Habit list: legibility is the whole point here ---------- */
+  ul.habit-list { list-style: none; margin: 0; padding: 0; }
+
+  li.habit {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 4px;
+    border-bottom: 1px solid var(--line);
+    cursor: pointer;
+    user-select: none;
+  }
+  li.habit:active { background: rgba(196,80,30,0.08); }
+
+  .checkbox {
+    width: 28px; height: 28px;
+    border: 2.5px solid var(--ink);
+    border-radius: 4px;
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.12s ease;
+  }
+  .checkbox.checked {
+    background: var(--done-bg);
+    border-color: var(--done-bg);
+  }
+  .checkbox.checked::after {
+    content: '✓';
+    color: var(--done-fg);
+    font-size: 17px;
+    font-weight: 800;
+  }
+
+  .habit-name {
+    flex: 1;
+    font-family: 'Archivo', sans-serif;
+    font-size: 17.5px;
+    font-weight: 700;
+    line-height: 1.35;
+    color: var(--ink);
+  }
+  li.habit.done .habit-name {
+    color: var(--ink-soft);
+    text-decoration: line-through;
+    text-decoration-color: var(--ink-soft);
+    text-decoration-thickness: 2px;
+  }
+  .habit-actions {
+    background: none; border: none; color: var(--ink-soft);
+    font-size: 19px; padding: 6px 8px; cursor: pointer;
+  }
+
+  .add-habit-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  .add-habit-row input {
+    flex: 1;
+    font-family: 'Archivo', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 14px 16px;
+    border: 2px solid var(--ink);
+    border-radius: 4px;
+    background: var(--paper);
+    color: var(--ink);
+  }
+  .add-habit-row input::placeholder { color: var(--ink-soft); font-weight: 500; }
+  .add-habit-row input:focus { outline: none; border-color: var(--vermilion); }
+  .btn-small {
+    font-family: 'Archivo', sans-serif;
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    padding: 0 22px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  /* ---------- Photo capture card ---------- */
+  .photo-card {
+    border: 2px solid var(--ink);
+    border-radius: 4px;
+    overflow: hidden;
+    background: var(--paper-dim);
+  }
+  .photo-frame {
+    aspect-ratio: 3/4;
+    background: repeating-linear-gradient(45deg, rgba(43,29,14,0.05) 0, rgba(43,29,14,0.05) 10px, transparent 10px, transparent 20px);
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .photo-frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .photo-placeholder {
+    text-align: center;
+    color: var(--ink-soft);
+    padding: 24px;
+  }
+  .photo-placeholder .icon { font-size: 40px; margin-bottom: 10px; opacity: 0.6; }
+  .photo-placeholder .sub { font-family: 'Fraunces', serif; font-size: 15px; font-style: italic; }
+
+  .photo-actions {
+    display: flex;
+    border-top: 2px solid var(--ink);
+  }
+  .photo-actions button {
+    flex: 1;
+    background: none;
+    border: none;
+    padding: 17px;
+    font-family: 'Archivo', sans-serif;
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--ink);
+    cursor: pointer;
+    border-right: 2px solid var(--ink);
+  }
+  .photo-actions button:last-child { border-right: none; }
+  .photo-actions button.danger { color: var(--vermilion-deep); }
+
+  input[type=file] { display: none; }
+
+  /* ---------- Memory / timeline view ---------- */
+  .memory-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3px;
+  }
+  .memory-cell {
+    aspect-ratio: 1;
+    background: var(--paper-dim);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+  }
+  .memory-cell img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .memory-cell .no-photo {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--ink-soft);
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .memory-cell .date-stamp {
+    position: absolute;
+    bottom: 4px; left: 5px;
+    font-size: 11px;
+    font-weight: 800;
+    color: #fff;
+    text-shadow: 0 0 3px rgba(0,0,0,0.9);
+  }
+  .memory-cell .pct-stamp {
+    position: absolute;
+    top: 4px; right: 4px;
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--paper);
+    background: var(--vermilion-deep);
+    padding: 2px 6px;
+    border-radius: 3px;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 64px 20px;
+    color: var(--ink-soft);
+  }
+  .empty-state .icon { font-size: 44px; opacity: 0.5; margin-bottom: 14px; }
+  .empty-state p { font-family: 'Fraunces', serif; font-style: italic; font-size: 17px; line-height: 1.6; max-width: 300px; margin: 0 auto; }
+
+  /* ---------- Day detail modal ---------- */
+  .modal-backdrop {
+    position: fixed; inset: 0;
+    background: rgba(23,19,15,0.65);
+    display: none;
+    align-items: flex-end;
+    z-index: 50;
+  }
+  .modal-backdrop.open { display: flex; }
+  .modal-sheet {
+    background: var(--paper);
+    width: 100%;
+    max-height: 88vh;
+    overflow-y: auto;
+    border-radius: 0;
+    border-top: 3px solid var(--ink);
+    padding: 22px 20px calc(30px + env(safe-area-inset-bottom,0));
+    animation: slideUp 0.2s ease;
+    position: relative;
+  }
+  @keyframes slideUp { from { transform: translateY(16px); opacity:0.6 } to { transform: translateY(0); opacity:1 } }
+  .modal-date {
+    font-family: 'Fraunces', serif;
+    font-style: italic; font-size: 22px; margin: 4px 0 4px;
+  }
+  .modal-close {
+    position: absolute; top: 18px; right: 18px;
+    background: none; border: none; font-size: 22px; color: var(--ink-soft);
+  }
+
+  /* ---------- Bottom nav ---------- */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: var(--paper);
+    border-top: 3px solid var(--ink);
+    display: flex;
+    justify-content: center;
+    z-index: 30;
+    padding-bottom: env(safe-area-inset-bottom, 0);
+  }
+  .bottom-nav-inner {
+    max-width: 560px; width: 100%;
+    display: flex;
+  }
+  .bottom-nav button {
+    flex: 1;
+    background: none; border: none;
+    padding: 14px 4px 12px;
+    font-family: 'Archivo', sans-serif;
+    font-size: 11.5px;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    display: flex; flex-direction: column; align-items: center; gap: 5px;
+    cursor: pointer;
+  }
+  .bottom-nav button .glyph { font-size: 21px; }
+  .bottom-nav button.active { color: var(--vermilion-deep); }
+
+  /* toast */
+  .toast {
+    position: fixed;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%) translateY(8px);
+    background: var(--ink);
+    color: var(--paper);
+    font-family: 'Archivo', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    padding: 12px 20px;
+    border-radius: 4px;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.25s ease;
+    z-index: 60;
+    white-space: nowrap;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  ::selection { background: var(--vermilion); color: var(--paper); }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <header class="top">
+    <div class="masthead-row">
+      <div class="mark">DAJIOS</div>
+      <div class="date-line" id="todayLabel">—</div>
+    </div>
+    <h1 class="title">Daily<br>Practice</h1>
+  </header>
+
+  <div class="epigraph">
+    <span class="rule-num">Verse of the Day</span>
+    <div class="quote-text" id="quoteText">—</div>
+    <div class="quote-source" id="quoteSource">—</div>
+  </div>
+
+  <div class="streak-row">
+    <div class="streak-item">
+      <span class="streak-num" id="streakNum">0</span>
+      <span class="streak-label">Day<br>Streak</span>
+    </div>
+  </div>
+
+  <nav class="tabs">
+    <button class="tab-btn active" data-view="today">Today</button>
+    <button class="tab-btn" data-view="memory">Memory</button>
+    <button class="tab-btn" data-view="manage">Habits</button>
+  </nav>
+
+  <main>
+    <!-- TODAY VIEW -->
+    <section class="view active" id="view-today">
+      <div class="day-summary">
+        <div class="ring" id="ringToday" style="--pct:0"><span id="ringPct">0%</span></div>
+        <div class="txt">
+          <div class="n" id="doneCount">0 of 0 done</div>
+          <div class="m" id="dayMotto">The day is unwritten.</div>
+        </div>
+      </div>
+
+      <div class="section-label">Today's Practice</div>
+      <ul class="habit-list" id="habitList"></ul>
+
+      <div class="section-label">Progress Photo</div>
+      <div class="photo-card">
+        <div class="photo-frame" id="photoFrame">
+          <div class="photo-placeholder">
+            <div class="icon">◱</div>
+            <div class="sub">No photo taken today</div>
+          </div>
+        </div>
+        <div class="photo-actions">
+          <button id="takePhotoBtn">Add Photo</button>
+          <button id="retakePhotoBtn" class="danger" style="display:none;">Remove</button>
+        </div>
+      </div>
+      <input type="file" id="photoInput" accept="image/*" capture="environment">
+    </section>
+
+    <!-- MEMORY VIEW -->
+    <section class="view" id="view-memory">
+      <div class="section-label">Every Day, Kept</div>
+      <div id="memoryGrid" class="memory-grid"></div>
+      <div class="empty-state" id="memoryEmpty" style="display:none;">
+        <div class="icon">◱</div>
+        <p>Nothing here yet. Each day you practice, a record forms — a quiet timeline you can return to.</p>
+      </div>
+    </section>
+
+    <!-- MANAGE VIEW -->
+    <section class="view" id="view-manage">
+      <div class="section-label">Edit Your Practice</div>
+      <ul class="habit-list" id="manageList"></ul>
+      <div class="add-habit-row">
+        <input type="text" id="newHabitInput" placeholder="Add a new habit…" maxlength="60">
+        <button class="btn-small" id="addHabitBtn">Add</button>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div class="bottom-nav">
+  <div class="bottom-nav-inner">
+    <button class="bnav-btn active" data-view="today"><span class="glyph">☸</span>Today</button>
+    <button class="bnav-btn" data-view="memory"><span class="glyph">▦</span>Memory</button>
+    <button class="bnav-btn" data-view="manage"><span class="glyph">✎</span>Habits</button>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="dayModalBackdrop">
+  <div class="modal-sheet">
+    <button class="modal-close" id="modalCloseBtn">✕</button>
+    <div class="modal-date" id="modalDate">—</div>
+    <div class="day-summary" style="margin-top:14px;">
+      <div class="ring" id="modalRing" style="--pct:0"><span id="modalPct">0%</span></div>
+      <div class="txt"><div class="n" id="modalCount">0 of 0 done</div></div>
+    </div>
+    <div id="modalPhotoWrap" style="margin:18px 0; border-radius:4px; overflow:hidden; border:2px solid var(--ink);"></div>
+    <div class="section-label">Habits That Day</div>
+    <ul class="habit-list" id="modalHabitList"></ul>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  "use strict";
+
+  const DB_NAME = 'dajios-db';
+  const DB_VERSION = 1;
+  let db;
+
+  function openDB(){
+    return new Promise((resolve, reject) => {
+      const req = indexedDB.open(DB_NAME, DB_VERSION);
+      req.onupgradeneeded = (e) => {
+        const _db = e.target.result;
+        if (!_db.objectStoreNames.contains('days')) {
+          _db.createObjectStore('days', { keyPath: 'date' });
+        }
+        if (!_db.objectStoreNames.contains('meta')) {
+          _db.createObjectStore('meta', { keyPath: 'key' });
+        }
+      };
+      req.onsuccess = (e) => { db = e.target.result; resolve(db); };
+      req.onerror = (e) => reject(e);
+    });
+  }
+
+  function tx(storeName, mode){
+    return db.transaction(storeName, mode).objectStore(storeName);
+  }
+  function idbGet(store, key){
+    return new Promise((resolve, reject) => {
+      const r = tx(store, 'readonly').get(key);
+      r.onsuccess = () => resolve(r.result || null);
+      r.onerror = (e) => reject(e);
+    });
+  }
+  function idbGetAll(store){
+    return new Promise((resolve, reject) => {
+      const r = tx(store, 'readonly').getAll();
+      r.onsuccess = () => resolve(r.result || []);
+      r.onerror = (e) => reject(e);
+    });
+  }
+  function idbPut(store, val){
+    return new Promise((resolve, reject) => {
+      const r = tx(store, 'readwrite').put(val);
+      r.onsuccess = () => resolve();
+      r.onerror = (e) => reject(e);
+    });
+  }
+
+  const DEFAULT_HABITS = [
+    "Hit 1750 calories",
+    "180g protein",
+    "Fat ≤ 68.25g",
+    "1 gallon of water",
+    "10 pages non-fiction reading",
+    "3 workouts",
+    "Shower",
+    "Brush teeth & floss",
+    "School complete",
+    "Progress picture",
+    "1 hour banjo lesson",
+    "10 minute meditation",
+    "Full stretch session",
+    "Ice bath or shower"
+  ];
+
+  function uid(){ return 'h_' + Math.random().toString(36).slice(2,10); }
+
+  function todayStr(d){
+    d = d || new Date();
+    const y = d.getFullYear();
+    const m = String(d.getMonth()+1).padStart(2,'0');
+    const day = String(d.getDate()).padStart(2,'0');
+    return `${y}-${m}-${day}`;
+  }
+
+  const QUOTES = [
+    { text: "As the wheel follows the ox that draws the cart, suffering follows an unguarded mind.", source: "Dhammapada, v.1" },
+    { text: "Speak or act with a clear mind, and happiness follows you like a shadow that never leaves.", source: "Dhammapada, v.2" },
+    { text: "Hatred is never ended by hatred. It ends only by love — this is the ancient law.", source: "Dhammapada, v.5" },
+    { text: "Just as rain breaks through a poorly thatched roof, desire breaks through an undeveloped mind.", source: "Dhammapada, v.13" },
+    { text: "The one who is earnest does not die; the heedless are as if dead already.", source: "Dhammapada, v.21" },
+    { text: "Better than a hundred years lived carelessly is a single day lived with earnest effort.", source: "Dhammapada, v.111 (paraphrase)" },
+    { text: "By oneself the evil is done, by oneself one is defiled. By oneself evil is left undone, by oneself one is purified.", source: "Dhammapada, v.165" },
+    { text: "Let no one neglect their own task for the sake of another's, however great.", source: "Dhammapada, v.166 (paraphrase)" },
+    { text: "You are the guardian of your own good; who else could safeguard it for you?", source: "Dhammapada, v.160 (paraphrase)" },
+    { text: "Though one may conquer a thousand times a thousand in battle, the true conqueror is the one who conquers themselves.", source: "Dhammapada, v.103" },
+    { text: "Not by shaved head does one become a monk, if one is undisciplined and speaks falsely.", source: "Dhammapada, v.264" },
+    { text: "You yourselves must make the effort; the Buddhas only point the way.", source: "Dhammapada, v.276" },
+    { text: "All conditioned things are impermanent — when one sees this with wisdom, one turns away from suffering.", source: "Dhammapada, v.277" },
+    { text: "Look upon the world as a bubble; look upon it as a mirage. The one who sees the world this way, death does not see.", source: "Dhammapada, v.170" },
+    { text: "Wakefulness is the road to the deathless; heedlessness is the road to death.", source: "Dhammapada, v.21 (paraphrase)" },
+    { text: "As a bee gathers nectar without harming the flower's color or scent, so should the sage move through the village.", source: "Dhammapada, v.49" },
+    { text: "Do not look at the faults of others, or what others have done or left undone. Look rather at what you yourself have done or left undone.", source: "Dhammapada, v.50" },
+    { text: "Just as a solid rock is not shaken by the storm, the wise are not moved by praise or blame.", source: "Dhammapada, v.81" },
+    { text: "One word that brings peace is better than a thousand meaningless verses.", source: "Dhammapada, v.100 (paraphrase)" },
+    { text: "Health is the highest gain, contentment the greatest wealth, trust the best kinship, freedom the highest bliss.", source: "Dhammapada, v.204" },
+    { text: "There is no fire like desire, no crime like hatred, no sorrow like separation, no sickness like hunger, no ease like peace.", source: "Dhammapada, v.202-204 (paraphrase)" },
+    { text: "It is good to tame the mind, which is hard to hold and swift to seize whatever it desires.", source: "Dhammapada, v.35 (paraphrase)" },
+    { text: "The fool who knows their own foolishness is, to that extent, wise. The fool who thinks they are wise is called a fool indeed.", source: "Dhammapada, v.63" },
+    { text: "Better to live one day seeing the rise and fall of things than to live a hundred years without ever seeing them.", source: "Dhammapada, v.113 (paraphrase)" },
+    { text: "Irrigators channel water, fletchers straighten arrows, carpenters shape wood, and the wise master themselves.", source: "Dhammapada, v.80" },
+    { text: "As a mountain of solid rock is not shaken by the wind, so the wise are unmoved by blame and praise alike.", source: "Dhammapada, v.81 (paraphrase)" },
+    { text: "One is not called noble for harming living beings. By not harming, one is called noble.", source: "Dhammapada, v.270 (paraphrase)" },
+    { text: "Better than a thousand hollow words is one word of sense that brings peace to the hearer.", source: "Dhammapada, v.100" },
+    { text: "From meditation comes wisdom; without meditation, wisdom wanes.", source: "Dhammapada, v.282 (paraphrase)" },
+    { text: "Whoever gives up the habit of heedlessness for heedfulness lights up this world, like the moon freed from a cloud.", source: "Dhammapada, v.172" }
+  ];
+
+  function dayOfYear(d){
+    const start = new Date(d.getFullYear(), 0, 0);
+    const diff = d - start;
+    return Math.floor(diff / (1000 * 60 * 60 * 24));
+  }
+
+  function getTodaysQuote(){
+    const idx = dayOfYear(new Date()) % QUOTES.length;
+    return QUOTES[idx];
+  }
+
+  const MOTTOS = [
+    "The day is unwritten.",
+    "Small steps, kept quietly.",
+    "Discipline is a form of self-respect.",
+    "One day, fully lived.",
+    "Nothing fancy. Just done.",
+    "The record speaks for itself.",
+    "Consistency over intensity."
+  ];
+
+  let habitDefs = [];
+  let currentDay = null;
+
+  async function loadHabitDefs(){
+    const meta = await idbGet('meta', 'habitDefs');
+    if (meta && meta.value && meta.value.length){
+      habitDefs = meta.value;
+    } else {
+      habitDefs = DEFAULT_HABITS.map(name => ({ id: uid(), name, archived:false }));
+      await idbPut('meta', { key: 'habitDefs', value: habitDefs });
+    }
+  }
+  async function saveHabitDefs(){
+    await idbPut('meta', { key: 'habitDefs', value: habitDefs });
+  }
+
+  async function loadDay(dateStr){
+    let day = await idbGet('days', dateStr);
+    if (!day){
+      day = { date: dateStr, habits: {}, photo: null };
+    }
+    habitDefs.forEach(h => { if (!(h.id in day.habits)) day.habits[h.id] = false; });
+    return day;
+  }
+  async function saveDay(day){
+    await idbPut('days', day);
+  }
+
+  async function computeStreak(){
+    const all = await idbGetAll('days');
+    const byDate = {};
+    all.forEach(d => byDate[d.date] = d);
+    let streak = 0;
+    let cursor = new Date();
+    while (true){
+      const ds = todayStr(cursor);
+      const day = byDate[ds];
+      if (!day) break;
+      const activeIds = habitDefs.map(h=>h.id);
+      const doneCount = activeIds.filter(id => day.habits[id]).length;
+      const total = activeIds.length || 1;
+      const pct = doneCount/total;
+      if (pct >= 0.8) {
+        streak++;
+        cursor.setDate(cursor.getDate()-1);
+      } else {
+        break;
+      }
+    }
+    return streak;
+  }
+
+  function pctFor(day){
+    const activeIds = habitDefs.filter(h=>!h.archived).map(h=>h.id);
+    const total = activeIds.length || 1;
+    const done = activeIds.filter(id => day.habits[id]).length;
+    return { done, total, pct: Math.round((done/total)*100) };
+  }
+
+  function renderToday(){
+    const { done, total, pct } = pctFor(currentDay);
+    document.getElementById('ringToday').style.setProperty('--pct', pct);
+    document.getElementById('ringPct').textContent = pct + '%';
+    document.getElementById('doneCount').textContent = `${done} of ${total} done`;
+    const mottoIdx = Math.min(MOTTOS.length-1, Math.floor(pct/100 * (MOTTOS.length-1)));
+    document.getElementById('dayMotto').textContent = pct===0 ? MOTTOS[0] : (pct===100 ? "Every rite observed." : MOTTOS[mottoIdx]);
+
+    const list = document.getElementById('habitList');
+    list.innerHTML = '';
+    habitDefs.filter(h=>!h.archived).forEach(h => {
+      const isDone = !!currentDay.habits[h.id];
+      const li = document.createElement('li');
+      li.className = 'habit' + (isDone ? ' done' : '');
+      li.innerHTML = `
+        <div class="checkbox ${isDone ? 'checked' : ''}"></div>
+        <div class="habit-name">${escapeHtml(h.name)}</div>
+      `;
+      li.addEventListener('click', async () => {
+        currentDay.habits[h.id] = !currentDay.habits[h.id];
+        await saveDay(currentDay);
+        renderToday();
+        refreshStreak();
+      });
+      list.appendChild(li);
+    });
+
+    const frame = document.getElementById('photoFrame');
+    const retakeBtn = document.getElementById('retakePhotoBtn');
+    if (currentDay.photo){
+      frame.innerHTML = `<img src="${currentDay.photo}" alt="Today's progress photo">`;
+      retakeBtn.style.display = 'block';
+    } else {
+      frame.innerHTML = `<div class="photo-placeholder"><div class="icon">◱</div><div class="sub">No photo taken today</div></div>`;
+      retakeBtn.style.display = 'none';
+    }
+  }
+
+  function escapeHtml(s){
+    return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  async function refreshStreak(){
+    const s = await computeStreak();
+    document.getElementById('streakNum').textContent = s;
+  }
+
+  function renderManage(){
+    const list = document.getElementById('manageList');
+    list.innerHTML = '';
+    habitDefs.forEach(h => {
+      const li = document.createElement('li');
+      li.className = 'habit';
+      li.innerHTML = `
+        <div class="habit-name" style="${h.archived ? 'opacity:0.4;text-decoration:line-through;' : ''}">${escapeHtml(h.name)}</div>
+        <button class="habit-actions" data-action="toggle" title="${h.archived ? 'Restore' : 'Archive'}">${h.archived ? '↺' : '⏸'}</button>
+        <button class="habit-actions" data-action="delete" title="Delete">✕</button>
+      `;
+      li.querySelector('[data-action="toggle"]').addEventListener('click', async (e) => {
+        e.stopPropagation();
+        h.archived = !h.archived;
+        await saveHabitDefs();
+        renderManage();
+        renderToday();
+      });
+      li.querySelector('[data-action="delete"]').addEventListener('click', async (e) => {
+        e.stopPropagation();
+        if (confirm(`Remove "${h.name}" from your practice? Past records stay in Memory.`)){
+          habitDefs = habitDefs.filter(x => x.id !== h.id);
+          await saveHabitDefs();
+          renderManage();
+          renderToday();
+        }
+      });
+      list.appendChild(li);
+    });
+  }
+
+  document.getElementById('addHabitBtn').addEventListener('click', addHabit);
+  document.getElementById('newHabitInput').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') addHabit();
+  });
+  async function addHabit(){
+    const input = document.getElementById('newHabitInput');
+    const name = input.value.trim();
+    if (!name) return;
+    habitDefs.push({ id: uid(), name, archived:false });
+    await saveHabitDefs();
+    input.value = '';
+    renderManage();
+    currentDay = await loadDay(todayStr());
+    renderToday();
+    showToast('Habit added');
+  }
+
+  async function renderMemory(){
+    const all = await idbGetAll('days');
+    all.sort((a,b) => b.date.localeCompare(a.date));
+    const grid = document.getElementById('memoryGrid');
+    const empty = document.getElementById('memoryEmpty');
+    grid.innerHTML = '';
+
+    const withData = all.filter(d => d.photo || Object.values(d.habits).some(Boolean));
+    if (withData.length === 0){
+      empty.style.display = 'block';
+      grid.style.display = 'none';
+      return;
+    }
+    empty.style.display = 'none';
+    grid.style.display = 'grid';
+
+    withData.forEach(day => {
+      const { pct } = pctFor(day);
+      const cell = document.createElement('div');
+      cell.className = 'memory-cell';
+      const dateShort = day.date.slice(5).replace('-', '/');
+      cell.innerHTML = `
+        ${day.photo ? `<img src="${day.photo}" alt="${day.date}">` : `<div class="no-photo">${dateShort}</div>`}
+        <div class="pct-stamp">${pct}%</div>
+        ${day.photo ? `<div class="date-stamp">${dateShort}</div>` : ''}
+      `;
+      cell.addEventListener('click', () => openDayModal(day));
+      grid.appendChild(cell);
+    });
+  }
+
+  function openDayModal(day){
+    const { done, total, pct } = pctFor(day);
+    document.getElementById('modalDate').textContent = formatDateLong(day.date);
+    document.getElementById('modalRing').style.setProperty('--pct', pct);
+    document.getElementById('modalPct').textContent = pct + '%';
+    document.getElementById('modalCount').textContent = `${done} of ${total} done`;
+
+    const photoWrap = document.getElementById('modalPhotoWrap');
+    photoWrap.innerHTML = day.photo
+      ? `<img src="${day.photo}" style="width:100%;display:block;">`
+      : `<div style="padding:34px;text-align:center;color:var(--ink-soft);font-style:italic;font-size:15px;">No photo that day</div>`;
+
+    const list = document.getElementById('modalHabitList');
+    list.innerHTML = '';
+    habitDefs.forEach(h => {
+      const isDone = !!day.habits[h.id];
+      const li = document.createElement('li');
+      li.className = 'habit' + (isDone ? ' done' : '');
+      li.style.cursor = 'default';
+      li.innerHTML = `
+        <div class="checkbox ${isDone ? 'checked' : ''}"></div>
+        <div class="habit-name">${escapeHtml(h.name)}</div>
+      `;
+      list.appendChild(li);
+    });
+
+    document.getElementById('dayModalBackdrop').classList.add('open');
+  }
+  document.getElementById('modalCloseBtn').addEventListener('click', () => {
+    document.getElementById('dayModalBackdrop').classList.remove('open');
+  });
+  document.getElementById('dayModalBackdrop').addEventListener('click', (e) => {
+    if (e.target.id === 'dayModalBackdrop') e.currentTarget.classList.remove('open');
+  });
+
+  function formatDateLong(dateStr){
+    const [y,m,d] = dateStr.split('-').map(Number);
+    const dt = new Date(y, m-1, d);
+    return dt.toLocaleDateString(undefined, { weekday:'long', month:'long', day:'numeric', year:'numeric' });
+  }
+
+  document.getElementById('takePhotoBtn').addEventListener('click', () => {
+    document.getElementById('photoInput').click();
+  });
+  document.getElementById('photoInput').addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const dataUrl = await resizeImageToDataUrl(file, 1200);
+    currentDay.photo = dataUrl;
+    await saveDay(currentDay);
+    renderToday();
+    showToast('Photo saved');
+    e.target.value = '';
+  });
+  document.getElementById('retakePhotoBtn').addEventListener('click', async () => {
+    if (!confirm('Remove today\'s photo?')) return;
+    currentDay.photo = null;
+    await saveDay(currentDay);
+    renderToday();
+  });
+
+  function resizeImageToDataUrl(file, maxDim){
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      const reader = new FileReader();
+      reader.onload = (e) => { img.src = e.target.result; };
+      reader.onerror = reject;
+      img.onload = () => {
+        let { width, height } = img;
+        if (width > height && width > maxDim){
+          height = Math.round(height * (maxDim/width));
+          width = maxDim;
+        } else if (height > maxDim){
+          width = Math.round(width * (maxDim/height));
+          height = maxDim;
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = width; canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+        resolve(canvas.toDataURL('image/jpeg', 0.82));
+      };
+      img.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+
+  let toastTimer;
+  function showToast(msg){
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 1800);
+  }
+
+  function switchView(view){
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.getElementById('view-' + view).classList.add('active');
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.view === view));
+    document.querySelectorAll('.bnav-btn').forEach(b => b.classList.toggle('active', b.dataset.view === view));
+    if (view === 'memory') renderMemory();
+    if (view === 'manage') renderManage();
+  }
+  document.querySelectorAll('.tab-btn, .bnav-btn').forEach(btn => {
+    btn.addEventListener('click', () => switchView(btn.dataset.view));
+  });
+
+  async function init(){
+    await openDB();
+    await loadHabitDefs();
+    currentDay = await loadDay(todayStr());
+
+    const now = new Date();
+    document.getElementById('todayLabel').textContent = now.toLocaleDateString(undefined, { weekday:'short', month:'short', day:'numeric' });
+
+    const q = getTodaysQuote();
+    document.getElementById('quoteText').textContent = q.text;
+    document.getElementById('quoteSource').textContent = q.source;
+
+    renderToday();
+    await refreshStreak();
+  }
+
+  init();
+
+})();
+</script>
+</body>
+</html>
